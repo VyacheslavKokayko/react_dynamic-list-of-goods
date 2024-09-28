@@ -1,44 +1,41 @@
-import { useEffect, useRef, useState } from 'react';
-import './App.scss';
-import { GoodsList } from './GoodsList';
+import { useState, FC } from 'react';
 
 import { getAll, get5First, getRedGoods } from './api/goods';
+
 import { Good } from './types/Good';
 
-// or
-// import * as goodsAPI from './api/goods';
+import { GoodsList } from './GoodsList';
 
-export const App: React.FC = () => {
-  const [reload, setReload] = useState('');
+import './App.scss';
+
+import React from 'react';
+
+export const App: FC = () => {
   const [goods, setGoods] = useState<Good[]>([]);
 
-  const firstRender = useRef(true);
+  // const loadGoods = async () => {
+  //   const data = await getAll();
 
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
+  //   setGoods(data);
+  // };
 
-      return;
-    }
+  // const load5Goods = async () => {
+  //   const data = await get5First();
 
-    switch (reload) {
-      case 'all':
-        getAll().then(setGoods);
-        break;
+  //   setGoods(data);
+  // };
 
-      case '5First':
-        get5First().then(setGoods);
-        break;
+  // const loadRedGoods = async () => {
+  //   const data = await getRedGoods();
 
-      case 'red':
-        getRedGoods().then(setGoods);
-        break;
+  //   setGoods(data);
+  // };
 
-      default:
-        getAll().then(setGoods);
-        break;
-    }
-  }, [reload]);
+  const loadGoods = async (loader: () => Promise<Good[]>) => {
+    const data = await loader();
+
+    setGoods(data);
+  };
 
   return (
     <div className="App">
@@ -47,7 +44,7 @@ export const App: React.FC = () => {
       <button
         type="button"
         data-cy="all-button"
-        onClick={() => setReload('All')}
+        onClick={() => loadGoods(getAll)}
       >
         Load all goods
       </button>
@@ -55,7 +52,7 @@ export const App: React.FC = () => {
       <button
         type="button"
         data-cy="first-five-button"
-        onClick={() => setReload('5First')}
+        onClick={() => loadGoods(get5First)}
       >
         Load 5 first goods
       </button>
@@ -63,7 +60,7 @@ export const App: React.FC = () => {
       <button
         type="button"
         data-cy="red-button"
-        onClick={() => setReload('red')}
+        onClick={() => loadGoods(getRedGoods)}
       >
         Load red goods
       </button>
