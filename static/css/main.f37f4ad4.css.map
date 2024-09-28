@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/main.f37f4ad4.css","mappings":"AAAA,UACI,UAGF,YACE,YAGF,WACE","sources":["App.scss"],"sourcesContent":[".good-red {\n    color: red;\n  }\n\n  .good-green {\n    color: green;\n  }\n\n  .good-blue {\n    color: blue;\n  }\n"],"names":[],"sourceRoot":""}
